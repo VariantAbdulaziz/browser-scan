@@ -1,11 +1,11 @@
 services:
   db:
     image: ankane/pgvector:latest
-    container_name: afp-db
+    container_name: browserscan-db
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: diff123Q
-      POSTGRES_DB: <app-name>
+      POSTGRES_DB: browserscan
 
     ports:
       - "5432:5432"
@@ -22,6 +22,33 @@ services:
     volumes:
       - ./.redis-data:/data
 
+  geoipupdate:
+    container_name: geoipupdate
+    image: ghcr.io/maxmind/geoipupdate
+    restart: unless-stopped
+    environment:
+      - "GEOIPUPDATE_ACCOUNT_ID_FILE=/run/secrets/MAXMIND_ACCOUNT_ID"
+      - "GEOIPUPDATE_LICENSE_KEY_FILE=/run/secrets/MAXMIND_LICENSE_KEY"
+      - "GEOIPUPDATE_EDITION_IDS=GeoLite2-ASN GeoLite2-City GeoLite2-Country"
+      - GEOIPUPDATE_FREQUENCY=72
+    networks:
+      - geoipupdate
+    volumes:
+      - "./geoip-data:/usr/share/GeoIP"
+    secrets:
+      - MAXMIND_ACCOUNT_ID
+      - MAXMIND_LICENSE_KEY
+
+networks:
+  geoipupdate:
+
 volumes:
   .db:
   .redis-data:
+  .geoip-data:
+
+secrets:
+  MAXMIND_ACCOUNT_ID:
+    file: ./secrets/MAXMIND_ACCOUNT_ID.txt
+  MAXMIND_LICENSE_KEY:
+    file: ./secrets/MAXMIND_LICENSE_KEY.txt

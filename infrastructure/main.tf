@@ -30,8 +30,8 @@ module "ssm" {
   db_name             = module.rds.db_name
   db_user             = module.rds.db_username
   db_password         = module.rds.db_password
-  maxmind_license_key = var.maxmind_license_key
   maxmind_account_id  = var.maxmind_account_id
+  maxmind_license_key = var.maxmind_license_key
 }
 
 module "ec2" {

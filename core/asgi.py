@@ -9,17 +9,16 @@ from django.urls import re_path, path
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 django_asgi_app = get_asgi_application()
 
-from accounts.consumers import AuthConsumer
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
 
-    "websocket": 
+    # "websocket": 
         # AllowedHostsOriginValidator(
             # AuthMiddlewareStack(
-                URLRouter([
-                    path('ws/<str:uuid>/', AuthConsumer.as_asgi()),
-                ])
+                # URLRouter([
+                #     path('ws/', Consumer.as_asgi()),
+                # ])
             # )
         # )
 })

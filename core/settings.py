@@ -7,7 +7,7 @@ load_dotenv(override=True)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-xx*6=wex+sjhjf_bm%gbc@p7dl3t5p)##e!#5ad^k4yt!0wto#')
-
+GEOIP_DIR = os.path.join(BASE_DIR, "geoip-data")
 DEBUG = os.environ.get("DEBUG", 'true') != 'false'
 
 DB_HOST=os.environ.get("DB_HOST")
@@ -59,7 +59,6 @@ MIDDLEWARE = [
 
     'allauth.account.middleware.AccountMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'accounts.middlewares.PendingAuthBroadcastMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'

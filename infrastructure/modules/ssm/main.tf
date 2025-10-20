@@ -58,5 +58,5 @@ resource "aws_ssm_parameter" "maxmind_account_id" {
 resource "aws_ssm_parameter" "maxmind_license_key" {
   name  = "/${var.namespace}/MAXMIND_LICENSE_KEY"
   type  = "SecureString"
-  value = var.maxmind_account_id
+  value = var.maxmind_license_key
 }

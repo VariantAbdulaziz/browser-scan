@@ -4,17 +4,34 @@ set -e
 cd /home/ec2-user/app
 source /home/ec2-user/.bash_profile
 
-TEMPLATE="/home/ec2-user/app/deployment/config/GeoIP.conf.template"
-TARGET="/usr/local/etc/GeoIP.conf"
+sudo mkdir -p ./secrets
+sudo chown -R ec2-user:ec2-user /home/ec2-user/app/secrets
 
-sudo cp "$TEMPLATE" "$TARGET"
+# Create Docker secrets
+echo "${MAXMIND_ACCOUNT_ID}" > ./secrets/MAXMIND_ACCOUNT_ID.txt
+echo "${MAXMIND_LICENSE_KEY}" > ./secrets/MAXMIND_LICENSE_KEY.txt
 
-sudo sed -i "s/{{MAXMIND_ACCOUNT_ID}}/${MAXMIND_ACCOUNT_ID}/g" "$TARGET"
-sudo sed -i "s/{{MAXMIND_LICENSE_KEY}}/${MAXMIND_LICENSE_KEY}/g" "$TARGET"
+sudo docker-compose up -d geoipupdate
 
-echo "/usr/local/etc/GeoIP.conf created successfully."
+GEOIP_DIR="./geoip-data"
+FILES=("GeoLite2-ASN.mmdb" "GeoLite2-City.mmdb" "GeoLite2-Country.mmdb")
+WAIT_SECONDS=5
 
-sudo crontab -e
-geoipupdate -v
+echo "Waiting for GeoIP databases to be downloaded..."
 
-42 21 * * 6,3 /usr/local/bin/geoipupdate
+while true; do
+    MISSING=()
+    for f in "${FILES[@]}"; do
+        if [ ! -f "$GEOIP_DIR/$f" ]; then
+            MISSING+=("$f")
+        fi
+    done
+
+    if [ ${#MISSING[@]} -eq 0 ]; then
+        echo "All GeoIP databases found in $GEOIP_DIR."
+        break
+    else
+        echo "Still waiting for: ${MISSING[*]}"
+        sleep $WAIT_SECONDS
+    fi
+done
