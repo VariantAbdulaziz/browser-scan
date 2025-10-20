@@ -1,0 +1,41 @@
+name: Deploy <app-name>
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Package and upload to S3
+        env:
+          APP_NAME: ${{ vars.APP_NAME }}
+          DEPLOY_GROUP: ${{ vars.DEPLOY_GROUP }}
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+          ZIP_FILE: ${{ vars.ZIP_FILE }}
+        run: |
+          zip -r $ZIP_FILE . -x "*.git*" "*.env*" "*.vscode*"
+          aws s3 cp $ZIP_FILE s3://$S3_BUCKET/$ZIP_FILE
+
+      - name: Trigger CodeDeploy
+        env:
+          APP_NAME: ${{ vars.APP_NAME }}
+          DEPLOY_GROUP: ${{ vars.DEPLOY_GROUP }}
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+          ZIP_FILE: ${{ vars.ZIP_FILE }}
+        run: |
+          aws deploy create-deployment \
+            --application-name $APP_NAME \
+            --deployment-group-name $DEPLOY_GROUP \
+            --s3-location bucket=$S3_BUCKET,bundleType=zip,key=$ZIP_FILE
