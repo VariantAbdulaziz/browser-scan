@@ -38,6 +38,8 @@ variable "ssm_parameter_names" {
     db_name              = string
     db_user              = string
     db_password          = string
+    maxmind_account_id   = string
+    maxmind_license_key  = string
   })
 }
 

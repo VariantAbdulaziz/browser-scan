@@ -10,7 +10,7 @@ sudo chown -R ec2-user:ec2-user /home/ec2-user/app/staticfiles
 sudo mkdir -p /etc/nginx/conf.d
 sudo cp -f /home/ec2-user/app/deployment/config/nginx.conf /etc/nginx/conf.d/default.conf
 
-DOMAIN="mutation.cc"
+DOMAIN="api.mutation.cc"
 EMAIL="variant.abdulaziz@gmail.com"
 
 sudo systemctl daemon-reload

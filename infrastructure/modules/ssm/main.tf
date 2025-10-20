@@ -47,3 +47,16 @@ resource "aws_ssm_parameter" "db_password" {
   value = var.db_password
 }
 
+# Maxmind Account Id
+resource "aws_ssm_parameter" "maxmind_account_id" {
+  name  = "/${var.namespace}/MAXMIND_ACCOUNT_ID"
+  type  = "SecureString"
+  value = var.maxmind_account_id
+}
+
+# Maxmind Licence Key
+resource "aws_ssm_parameter" "maxmind_license_key" {
+  name  = "/${var.namespace}/MAXMIND_LICENSE_KEY"
+  type  = "SecureString"
+  value = var.maxmind_account_id
+}

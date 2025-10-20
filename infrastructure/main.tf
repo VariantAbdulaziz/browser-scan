@@ -23,14 +23,15 @@ module "ssm" {
   source    = "./modules/ssm"
   namespace = var.namespace
 
-  secret_key = var.secret_key
-  debug      = var.debug
-
-  db_host     = module.rds.db_endpoint
-  db_port     = module.rds.db_port
-  db_name     = module.rds.db_name
-  db_user     = module.rds.db_username
-  db_password = module.rds.db_password
+  secret_key          = var.secret_key
+  debug               = var.debug
+  db_host             = module.rds.db_endpoint
+  db_port             = module.rds.db_port
+  db_name             = module.rds.db_name
+  db_user             = module.rds.db_username
+  db_password         = module.rds.db_password
+  maxmind_license_key = var.maxmind_license_key
+  maxmind_account_id  = var.maxmind_account_id
 }
 
 module "ec2" {

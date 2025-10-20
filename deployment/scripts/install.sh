@@ -4,7 +4,7 @@ set -e
 yum update -y
 
 # Install Nginx and other essentials
-yum install -y nginx openssl wget
+yum install -y nginx openssl wget geoipupdate
 
 # Install Python 3.13 from Amazon Linux Extras
 yum install -y python3.13 python3.13-pip

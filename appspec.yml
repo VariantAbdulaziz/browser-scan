@@ -26,6 +26,10 @@ hooks:
       runas: ec2-user
 
   ApplicationStart:
+    - location: deployment/scripts/geoip.sh
+      timeout: 300
+      runas: ec2-user
+
     - location: deployment/scripts/start.sh
       timeout: 300
       runas: ec2-user

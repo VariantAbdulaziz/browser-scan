@@ -68,3 +68,15 @@ variable "debug" {
   type        = string
   default     = "True"
 }
+
+variable "maxmind_account_id" {
+  description = "Maxmind account ID"
+  type        = string
+  sensitive   = true
+}
+
+variable "maxmind_license_key" {
+  description = "Maxmind License Key"
+  type        = string
+  sensitive   = true
+}

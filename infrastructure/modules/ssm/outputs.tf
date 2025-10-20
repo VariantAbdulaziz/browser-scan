@@ -8,5 +8,7 @@ output "parameter_names" {
     db_name              = aws_ssm_parameter.db_name.name
     db_user              = aws_ssm_parameter.db_user.name
     db_password          = aws_ssm_parameter.db_password.name
+    maxmind_account_id   = aws_ssm_parameter.maxmind_account_id.name
+    maxmind_license_key  = aws_ssm_parameter.maxmind_license_key.name
   }
 }

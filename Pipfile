@@ -20,6 +20,7 @@ python-dotenv = "*"
 requests = "*"
 oauthlib = "*"
 pyjwt = "*"
+geoip2 = "*"
 
 [dev-packages]
 
