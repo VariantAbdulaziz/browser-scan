@@ -23,6 +23,22 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow public DNS (UDP)"
+  }
+
+  ingress {
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow public DNS (TCP)"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0

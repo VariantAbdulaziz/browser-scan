@@ -21,6 +21,9 @@ requests = "*"
 oauthlib = "*"
 pyjwt = "*"
 geoip2 = "*"
+dnslib = "*"
+certbot = "*"
+certbot-dns-cloudflare = "*"
 
 [dev-packages]
 

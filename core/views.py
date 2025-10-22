@@ -29,6 +29,7 @@ def geoip_lookup(request):
     try:
         country = g.country(ip)
         city = g.city(ip)
+        asn = g.asn(ip)
     except Exception:
         country = {"country_name": "Unknown", "country_code": "XX"}
         city = {"city": "Unknown", "region": "", "latitude": None, "longitude": None}
@@ -36,5 +37,6 @@ def geoip_lookup(request):
     return Response({
         "ip": ip,
         "country": country,
-        "city": city
+        "city": city,
+        "asn": asn
     }, status=200)

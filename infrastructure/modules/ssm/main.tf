@@ -60,3 +60,9 @@ resource "aws_ssm_parameter" "maxmind_license_key" {
   type  = "SecureString"
   value = var.maxmind_license_key
 }
+
+resource "aws_ssm_parameter" "dns_cloudflare_api_token" {
+  name  = "/${var.namespace}/DNS_CLOUDFLARE_API_TOKEN"
+  type  = "SecureString"
+  value = var.dns_cloudflare_api_token
+}

@@ -80,3 +80,9 @@ variable "maxmind_license_key" {
   type        = string
   sensitive   = true
 }
+
+variable "dns_cloudflare_api_token" {
+  description = "Cloudflare API Token for certbot"
+  type        = string
+  sensitive   = true
+}
