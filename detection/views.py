@@ -1,8 +1,14 @@
 import json
+import time
+
 from django.conf import settings
 from django.contrib.gis.geoip2 import GeoIP2
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 from .models import DNSLog
 
 @api_view(['GET'])
@@ -34,3 +40,40 @@ def dns_results(request):
         "dns_leak": leak_detected,
         "results": results
     })
+
+
+@api_view(["POST"])
+def upload_speed_test(request):
+    """
+    Simulates an upload speed test endpoint.
+    Reads raw binary data and sleeps proportionally to data size.
+    """
+    try:
+        # Read binary body (already fully loaded in DRF request)
+        data = request.body
+        data_length = len(data)
+
+        # Simulate processing time — 10s per MB, capped at 100s
+        processing_time = min((data_length / (1024 * 1024)) * 10, 100)
+        time.sleep(processing_time)
+
+        return Response(
+            {
+                "received": data_length,
+                "status": "success",
+            },
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+            },
+            status=200,
+        )
+
+    except Exception as e:
+        return Response(
+            {
+                "error": "Upload test failed",
+                "details": str(e),
+                "status": "error",
+            },
+            status=500,
+        )
